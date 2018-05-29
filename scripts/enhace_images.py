@@ -23,7 +23,13 @@ class enhance_image:
         self.left_image_pub = rospy.Publisher("/pirvs/left/image/compressed",CompressedImage,queue_size=5)
         self.right_image_pub = rospy.Publisher("/pirvs/right/image/compressed",CompressedImage,queue_size=5)
 
-        self.histenhance = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(4, 4))
+        # for indoor clipLimit=1.5, titleGridSize=(2,2) worked for me
+        # for outdoor clipLimit=2.0, tileGridSize=(5, 5) worked
+        # these parameters can be changed to obtain best results for a particluar package
+
+        # For more documentation see: https://docs.opencv.org/3.1.0/d5/daf/tutorial_py_histogram_equalization.html
+
+        self.histenhance = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(5, 5))
 
         self.time_sync = message_filters.ApproximateTimeSynchronizer([self.left_subscriber,self.right_subscriber], 10, 0.1)
 
