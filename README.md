@@ -22,7 +22,7 @@ If the package subscribes to topics directly, enhanced images can be published d
 - **rosrun vo_comparision enhance_images.py**
 This node subscribes to /pirvs/left/image_raw/compressed and publishes on /pirvs/left/image/compressed topic. Similar for right stereo image as well.
 
-Package requiring raw image must to image transport to convert compressed to raw images.
+Package requiring raw image must use image transport to convert compressed to raw images.
 - **rosrun image_transport republish compressed in:=in_topic raw out:=out_topic**
 
 ### Changing enhancement parameters
