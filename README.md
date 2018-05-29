@@ -20,6 +20,7 @@ The files should be saved in the current working directory.
 
 If the package subscribes to topics directly, enhanced images can be published directly using ros node.
 - **rosrun vo_comparision enhance_images.py**
+
 This node subscribes to /pirvs/left/image_raw/compressed and publishes on /pirvs/left/image/compressed topic. Similar for right stereo image as well.
 
 Package requiring raw image must use image transport to convert compressed to raw images.
