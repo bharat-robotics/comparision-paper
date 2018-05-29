@@ -33,7 +33,7 @@ I got good results with:
 - **Indoor husky data: clipLimit=1.0, tileGridSize=(2, 2)**
 - **Outdoor husky data: clipLimit=2.0, tileGridSize=(5, 5)**
 
-But it may vary with package but this could be staring point.
+But it may vary with package and this could be staring point.
 
 
 ## References
