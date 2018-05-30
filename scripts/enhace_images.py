@@ -29,7 +29,7 @@ class enhance_image:
 
         # For more documentation see: https://docs.opencv.org/3.1.0/d5/daf/tutorial_py_histogram_equalization.html
 
-        self.histenhance = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(5, 5))
+        self.histenhance = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(2, 2))
 
         self.time_sync = message_filters.ApproximateTimeSynchronizer([self.left_subscriber,self.right_subscriber], 10, 0.1)
 
@@ -37,6 +37,7 @@ class enhance_image:
 
     def img_callback(self,left_msg,right_msg):
 
+        rospy.loginfo(" Received Image message")
         ##Decoding image ##
         left_np_arr = np.fromstring(left_msg.data, np.uint8)
         left_image_np = cv2.imdecode(left_np_arr, cv2.IMREAD_GRAYSCALE)
@@ -68,8 +69,5 @@ class enhance_image:
 if __name__ == "__main__":
     image_enhance = enhance_image()
     rospy.init_node('enhance_images', anonymous=True)
-    try:
+    while(not rospy.is_shutdown()):
         rospy.spin()
-    except KeyboardInterrupt:
-        rospy.loginfo("Shutting down ROS Image Enhancement module")
-    cv2.destroyAllWindows()
