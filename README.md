@@ -3,8 +3,18 @@
 # Usage
 Since perceptin does not provide automatic exposure corrections, slight change in lighting condition affected the image quality. Thus, some sort of image enhancement technique was required to balance the lighting effects. Adaptive histogram equalization [1] is used to enhance images.
 
-Some packages can work by streaming bag files while others might require to read a collection of image or read directly from bag files. Thus, two methods are implemented seaprately.
+Some packages can work by streaming bag files while others might require to read a collection of image or read directly from bag files. Thus, two methods are implemented separately.
 
+However, it should be better to produce the enhanced bag file first and then, run it.
+
+### Record CPU and Memory Usage
+We are sampling the cpu and memory usage per second. The script *record_usage.py* will record the cpu and memory usage to different files so that we can use that later.
+
+Script will record the memory usage of any number of process id's. We must pass the process id of all nodes that the package is running and total usage is recorded in files.
+
+- **python record_usage.py --p *process_ids* --mem_file *memory file* --cpu_file *cpu file***
+  *python record_usage.py --p 11234 12434 1242 --mem_file mem.txt --cpu_file cpu.txt*
+  
 ### Storing enhanced images in another bag file
 Used if the package directly parses the bag file or read images from folder.
 
@@ -16,7 +26,7 @@ If sequence of image are required to be read from folder, we can dump images to 
 
 The files should be saved in the current working directory.
 
-### Using ros node 
+### Using ros node
 
 If the package subscribes to topics directly, enhanced images can be published directly using ros node.
 - **rosrun vo_comparision enhance_images.py**
