@@ -13,8 +13,9 @@ We are sampling the cpu and memory usage per second. The script *record_usage.py
 Script will record the memory usage of any number of process id's. We must pass the process id of all nodes that the package is running and total usage is recorded in files.
 
 - **python record_usage.py --p *process_ids* --mem_file *memory file* --cpu_file *cpu file***
+
   *python record_usage.py --p 11234 12434 1242 --mem_file mem.txt --cpu_file cpu.txt*
-  
+
 ### Storing enhanced images in another bag file
 Used if the package directly parses the bag file or read images from folder.
 
