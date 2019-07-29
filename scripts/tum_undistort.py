@@ -9,7 +9,7 @@ import os
 
 def load_params():
     skip_lines = 0
-    with open('//home/cokcybot/tum_vi/dataset-corridor2_512_16/dso/camchain.yaml') as infile:
+    with open('/media/cokcybot/CA0EC88E0EC874CB/comparision_bag_files/TUM_VI/dataset-corridor2_512_16/dso/camchain.yaml') as infile:
         for i in range(skip_lines):
             _ = infile.readline()
         data = yaml.load(infile)
@@ -26,9 +26,17 @@ def load_params():
 
     map1, map2 = cv2.fisheye.initUndistortRectifyMap(K, D, np.eye(3), K, DIM, cv2.CV_16SC2)
 
-    return  map1, map2
+    [fu, fv, pu, pv] = data['cam1']['intrinsics']
+    # https://medium.com/@kennethjiang/calibrate-fisheye-lens-using-opencv-333b05afa0b0
+    K = np.asarray([[fu, 0, pu], [0, fv, pv], [0, 0, 1]])  # K(3,3)
+    D = np.asarray(data['cam1']['distortion_coeffs'])  # D(4,1)
 
-def rectify_bag(input_folder, map1, map2):
+    map3, map4 = cv2.fisheye.initUndistortRectifyMap(K, D, np.eye(3), K, DIM, cv2.CV_16SC2)
+
+
+    return  map1, map2, map3, map4
+
+def rectify_bag(input_folder, map1, map2, map3, map4):
 
     clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(2, 2))
 
@@ -53,6 +61,7 @@ def rectify_bag(input_folder, map1, map2):
     cam0_time_file = open(cam0_time, 'w+')
     cam1_time_file = open(cam1_time, 'w+')
 
+    # print(cam0_files)
     for cam0_file in cam0_files:
         print('Undistorting', cam0_file)
         cv_image  = cv2.imread(cam0_file, cv2.IMREAD_GRAYSCALE)
@@ -71,7 +80,7 @@ def rectify_bag(input_folder, map1, map2):
         val = vals[len(vals)-1]
         timestamp = val.split('.')[0]
         cam1_time_file.write('%s\n' % timestamp)
-        undistorted_img = cv2.remap(cv_image, map1, map2, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
+        undistorted_img = cv2.remap(cv_image, map3, map4, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
         enhanced_img = clahe.apply(undistorted_img)
         cv2.imwrite(os.path.join(cam1_output_folder, timestamp) + '.png', enhanced_img)
 
@@ -96,5 +105,5 @@ if __name__ == '__main__':
     parser.add_argument('--folder', help='input bagfile')
     args = parser.parse_args()
 
-    map1, map2 = load_params()
-    rectify_bag( args.folder, map1, map2)
+    map1, map2, map3, map4 = load_params()
+    rectify_bag( args.folder, map1, map2, map3, map4)

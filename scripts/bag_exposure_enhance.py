@@ -19,7 +19,7 @@ def enhance_images(inbag,outbag):
 
     print(inbag)
     outbag = rosbag.Bag(outbag,'w',allow_unindexed='true')
-    clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(2,2))
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(5, 5))
 
     for topic, msg, t in rosbag.Bag(inbag,'r').read_messages():
         if topic in ("/pirvs/left/image_raw/compressed","/pirvs/right/image_raw/compressed"):

@@ -35,7 +35,7 @@ class enhance_image:
 
         self.time_sync.registerCallback(self.img_callback)
 
-    def img_callback(self,left_msg,right_msg):
+    def img_callback(self,left_msg, right_msg):
 
         rospy.loginfo(" Received Image message")
         ##Decoding image ##

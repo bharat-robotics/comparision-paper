@@ -5,7 +5,8 @@ import argparse
 
 import rospy
 from geometry_msgs.msg import PoseStamped
-pose_topic = ''
+
+pose_topic = '/lsd_slam/pose'
 
 class record_pose:
     def __init__(self, filename):
@@ -18,7 +19,7 @@ class record_pose:
     def pose_sub(self, pose_msg):
         position = pose_msg.pose.position
         quat = pose_msg.pose.orientation
-        self.f.write('%s,%f,%f,%f,%f,%f,%f,%f\n' % (str(pose_msg.pose.header.stamp), position.x, position.y, position.z, quat.x, quat.y, quat.z, quat.w))
+        self.f.write('%s,%f,%f,%f,%f,%f,%f,%f\n' % (str(pose_msg.header.stamp), position.x, position.y, position.z, quat.x, quat.y, quat.z, quat.w))
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description="Save memory and CPU usage")

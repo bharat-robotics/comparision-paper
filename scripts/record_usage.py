@@ -38,7 +38,6 @@ if __name__=='__main__':
 
 
     while not check_all_procs(process_check):
-        print process_check
         for proc in psutil.process_iter():
             for i, p in enumerate(process_names):
                 if(process_names[i] == proc.name()):
